@@ -145,7 +145,7 @@
             {% for post in posts %}
                 <article class="post-container">
                     <h2 class="post-title">
-                        <a href="#">{{ post.title }}</a>
+                        <a href="{% url 'blogapp:post_detail' post.slug %}">{{ post.title }}</a>
                     </h2>
                     
                     <div class="post-meta">
@@ -153,7 +153,7 @@
                             📅 {{ post.created_date|date:"F j, Y" }}
                         </span>
                         <span>
-                            👤 {{ post.author.username }}
+                            👤 <a href="{% url 'blogapp:posts_by_author' post.author.username %}" style="color: #667eea; text-decoration: none;">{{ post.author.username }}</a>
                         </span>
                         <span class="status-badge status-{{ post.status }}">
                             {{ post.status }}
@@ -170,7 +170,7 @@
                         {{ post.content|truncatewords:50 }}
                     </div>
                     
-                    <a href="#" class="read-more">
+                    <a href="{% url 'blogapp:post_detail' post.slug %}" class="read-more">
                         Read More →
                     </a>
                 </article>
