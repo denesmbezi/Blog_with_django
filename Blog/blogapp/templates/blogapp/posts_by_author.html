@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .header {
+                background: #35424a;
+                color: #ffffff;
+                padding: 10px 0;
+                text-align: center;
+            }
+            .header h1 {
+                margin: 0;
+                font-size: 24px;
+            }
+            .post-container {
+                background: #ffffff;
+                margin: 20px auto;
+                padding: 15px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .post-title {
+                font-size: 18px;
+                margin: 0 0 10px;
+            }
+            .post-meta {
+                font-size: 12px;
+                color: #777;
+            }
+            .post-content {
+                margin: 15px 0;
+            }
+            .back-to-home {
+                text-align: center;
+                margin: 20px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Posts by {{ author.username }}</h1>
+        </div>
+
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post-container">
+                    <h2 class="post-title">{{ post.title }}</h2>
+                    <div class="post-meta">
+                        <span>Published on {{ post.created_at|date:"F j, Y" }}</span>
+                    </div>
+                    <div class="post-content">
+                        {{ post.content|linebreaks }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts found.</p>
+        {% endif %}
+
+        <div class="back-to-home">
+            <a href="{% url 'blogapp:home' %}">Back to Home</a>
+        </div>
+    </body>
+</html>

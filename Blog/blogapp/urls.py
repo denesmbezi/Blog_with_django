@@ -7,7 +7,10 @@ app_name = 'blogapp'
 urlpatterns = [
     # Home page - list all posts
     path('', views.home, name='home'),
+    path('register/', views.register_author, name='register_author'),
+    path("login/",views.login_view, name='login_view'),
     
+    path('dashboard/<str:username>/', views.author_dashboard, name='author_dashboard'),
     # Post detail page - individual post view
     path('post/<slug:slug>/', views.post_detail, name='post_detail'),
     

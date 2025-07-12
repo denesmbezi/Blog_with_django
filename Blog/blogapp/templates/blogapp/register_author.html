@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+    </head>
+    <body>
+        <div class="header">
+            <h1>Register as an Author</h1>
+        </div>
+
+        <form method="post" action="{% url 'blogapp:register_author' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Register</button>
+        </form>
+        {% if messages %}
+        <ul>
+        {% for message in messages %}
+
+        <li>{{message}}</li>
+
+        {% endfor %}
+
+        </ul>
+
+        {% endif %}
+
+        <div class="back-to-home">
+            <a href="{% url 'blogapp:home' %}">Back to Home</a>
+        </div>
+</html>

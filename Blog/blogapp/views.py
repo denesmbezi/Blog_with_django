@@ -2,10 +2,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.utils import timezone
 from django.utils.text import slugify
 from .models import Post
+from .forms import InputForm, LoginForm
+
 
 def home(request):
     """Display all published posts on the homepage"""
@@ -14,6 +17,68 @@ def home(request):
         'posts': posts
     }
     return render(request, 'blogapp/home.html', context)
+
+
+
+
+def register_author(request):
+    if request.method == 'POST':
+        form = InputForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
+            
+            if User.objects.filter(email=email).exists():
+                messages.error(request, 'Email is already registered.')
+            else:
+                User.objects.create_user(username=username, password=password, email=email)
+                messages.success(request, f'Author {username} registered successfully!')
+                return redirect('blogapp:home')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = InputForm()
+
+    return render(request, "blogapp/register_author.html", {'form': form})
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            try:
+                # Since Django authenticates using username, we fetch username from email
+                user = User.objects.get(email=email)
+                user = authenticate(request, username=user.username, password=password)
+                
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, 'Logged in successfully!')
+                    return redirect('blogapp:author_dashboard', username=user.username)
+                else:
+                    messages.error(request, 'Invalid credentials.')
+            except User.DoesNotExist:
+                messages.error(request, 'User with that email does not exist.')
+    else:
+        form = LoginForm()
+
+    return render(request, 'blogapp/login.html', {'form': form})
+
+
+def author_dashboard(request, username):
+    user = get_object_or_404(User, username=username)
+    post = Post.objects.order_by('-created_date')
+    context = {
+        'user': user,
+        'posts': post
+    }
+    return render(request, "blogapp/author_dashboard.html", context)
+
+
 
 def post_detail(request, slug):
     """Display a single post in detail"""

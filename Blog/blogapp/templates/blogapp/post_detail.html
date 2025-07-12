@@ -221,9 +221,11 @@
             <span>
                 👤 <a href="{% url 'blogapp:posts_by_author' post.author.username %}">{{ post.author.username }}</a>
             </span>
+            {% if user.is_authenticated %}
             <span class="status-badge status-{{ post.status }}">
                 {{ post.status }}
             </span>
+            {% endif %}
             {% if post.published_date %}
                 <span>
                     📢 Published: {{ post.published_date|date:"F j, Y g:i A" }}

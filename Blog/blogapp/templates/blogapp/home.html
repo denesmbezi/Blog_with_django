@@ -155,9 +155,11 @@
                         <span>
                             👤 <a href="{% url 'blogapp:posts_by_author' post.author.username %}" style="color: #667eea; text-decoration: none;">{{ post.author.username }}</a>
                         </span>
+                        {% if user.is_authenticated %}
                         <span class="status-badge status-{{ post.status }}">
                             {{ post.status }}
                         </span>
+                        {% endif %}
                     </div>
                     
                     {% if post.excerpt %}
@@ -178,8 +180,10 @@
         {% else %}
             <div class="no-posts">
                 <h2>No posts yet!</h2>
+                {% if user.is_authenticated %}
                 <p>Start writing your first blog post in the Django admin.</p>
                 <p><a href="/admin/" style="color: #667eea;">Go to Admin Panel</a></p>
+                {% endif %}
             </div>
         {% endif %}
     </main>
