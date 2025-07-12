@@ -129,7 +129,7 @@ Visit `http://127.0.0.1:8000/blog/` to see the app.
 
 ## 🙌 Credits
 
-Built with ❤️ using Django by [Your Name].
+Built with ❤️ using Django by DENES MBEZI.
 
 ---
 
